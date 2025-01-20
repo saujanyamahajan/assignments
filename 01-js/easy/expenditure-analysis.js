@@ -14,7 +14,27 @@
 */
 
 function calculateTotalSpentByCategory(transactions) {
-  return [];
+      // Create a map to store category-wise total price
+      const categoryTotals = {};
+
+      // Iterate through each transaction
+      for (const transaction of transactions) {
+          const { category, price } = transaction;
+          
+          // If the category exists in the map, add the price, otherwise initialize it
+          if (categoryTotals[category]) {
+              categoryTotals[category] += price;
+          } else {
+              categoryTotals[category] = price;
+          }
+      }
+  
+      // Convert the map into an array of objects
+      return Object.entries(categoryTotals).map(([category, totalSpent]) => ({
+          category,
+          totalSpent,
+      }));
+  
 }
 
 module.exports = calculateTotalSpentByCategory;
