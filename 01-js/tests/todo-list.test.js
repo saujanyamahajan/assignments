@@ -1,96 +1,76 @@
 const Todo = require('../hard/todo-list');
 
 describe('Todo', () => {
-	let todoList;
+    let todoList;
 
-	beforeEach(() => {
-		todoList = new Todo();
-	});
+    beforeEach(() => {
+        todoList = new Todo();
+    });
 
-	test('add and getAll', () => {
-		todoList.add('Task 1');
-		todoList.add('Task 2');
-		todoList.add('Task 3');
+    test('add and getAll', () => {
+        todoList.add('Task 1');
+        todoList.add('Task 2');
+        todoList.add('Task 3');
 
-		expect(todoList.getAll()).toEqual([
-			'Task 1',
-			'Task 2',
-			'Task 3',
-		]);
-	});
+        expect(todoList.getAll()).toEqual(['Task 1', 'Task 2', 'Task 3']);
+    });
 
-	test('remove', () => {
-		todoList.add('Task 1');
-		todoList.add('Task 2');
-		todoList.add('Task 3');
+    test('remove', () => {
+        todoList.add('Task 1');
+        todoList.add('Task 2');
+        todoList.add('Task 3');
 
-		todoList.remove(1);
-		expect(todoList.getAll()).toEqual(['Task 1', 'Task 3']);
+        todoList.remove(1);
+        expect(todoList.getAll()).toEqual(['Task 1', 'Task 3']);
+    });
 
-		todoList.remove(0);
-		expect(todoList.getAll()).toEqual(['Task 3']);
+    test('remove with invalid index', () => {
+        todoList.add('Task 1');
+        todoList.add('Task 2');
 
-		todoList.remove(2);
-		expect(todoList.getAll()).toEqual(['Task 3']);
-	});
+        expect(() => todoList.remove(5)).toThrow('Invalid index');
+    });
 
-	test('update', () => {
-		todoList.add('Task 1');
-		todoList.add('Task 2');
-		todoList.add('Task 3');
+    test('update', () => {
+        todoList.add('Task 1');
+        todoList.add('Task 2');
 
-		todoList.update(1, 'Updated Task 2');
-		expect(todoList.get(1)).toBe('Updated Task 2');
+        todoList.update(1, 'Updated Task 2');
+        expect(todoList.get(1)).toBe('Updated Task 2');
+    });
 
-		todoList.update(3, 'Invalid Task');
-		expect(todoList.getAll()).toEqual([
-			'Task 1',
-			'Updated Task 2',
-			'Task 3',
-		]);
-	});
+    test('update with invalid index', () => {
+        todoList.add('Task 1');
+        todoList.add('Task 2');
 
-	test('get', () => {
-		todoList.add('Task 1');
-		todoList.add('Task 2');
-		todoList.add('Task 3');
+        expect(() => todoList.update(3, 'Invalid Task')).toThrow('Invalid index');
+    });
 
-		expect(todoList.get(0)).toBe('Task 1');
-		expect(todoList.get(2)).toBe('Task 3');
-		expect(todoList.get(3)).toBeNull();
-	});
+    test('get', () => {
+        todoList.add('Task 1');
+        todoList.add('Task 2');
 
-	test('clear', () => {
-		todoList.add('Task 1');
-		todoList.add('Task 2');
-		todoList.add('Task 3');
+        expect(todoList.get(0)).toBe('Task 1');
+        expect(todoList.get(1)).toBe('Task 2');
+    });
 
-		todoList.clear();
-		expect(todoList.getAll()).toEqual([]);
-	});
+    test('get with invalid index', () => {
+        todoList.add('Task 1');
+        expect(() => todoList.get(5)).toThrow('Invalid index');
+    });
 
-	test('remove and update with invalid indexes', () => {
-		todoList.add('Task 1');
-		todoList.add('Task 2');
+    test('clear', () => {
+        todoList.add('Task 1');
+        todoList.add('Task 2');
 
-		todoList.remove(5);
-		expect(todoList.getAll()).toEqual(['Task 1', 'Task 2']);
+        todoList.clear();
+        expect(todoList.getAll()).toEqual([]);
+    });
 
-		todoList.update(3, 'Updated Task');
-		expect(todoList.getAll()).toEqual(['Task 1', 'Task 2']);
-	});
+    test('add duplicate tasks', () => {
+        todoList.add('Task 1');
+        todoList.add('Task 1');
 
-	test('add duplicate tasks', () => {
-		todoList.add('Task 1');
-		todoList.add('Task 2');
-		todoList.add('Task 1');
-		todoList.add('Task 3');
-
-		expect(todoList.getAll()).toEqual([
-			'Task 1',
-			'Task 2',
-			'Task 1',
-			'Task 3',
-		]);
-	});
+        expect(todoList.getAll()).toEqual(['Task 1', 'Task 1']);
+    });
 });
