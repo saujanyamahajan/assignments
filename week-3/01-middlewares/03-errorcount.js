@@ -23,4 +23,11 @@ app.get('/errorCount', function(req, res) {
   res.status(200).json({ errorCount });
 });
 
+// Global error-handling middleware
+app.use((err, req, res, next) => {
+  errorCount++; // Increment error count
+  res.status(404).json({ error: err.message || "Not found" });
+});
+
+
 module.exports = app;

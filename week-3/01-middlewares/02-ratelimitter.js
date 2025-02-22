@@ -11,6 +11,23 @@ const app = express();
 // You have been given a numberOfRequestsForUser object to start off with which
 // clears every one second
 
+// Rate limiting middleware
+app.use((req, res, next) => {
+  const userId = req.header('user-id');
+  
+  if (!userId) {
+      return res.status(400).json({ error: 'User ID is required in the header' });
+  }
+
+  numberOfRequestsForUser[userId] = (numberOfRequestsForUser[userId] || 0) + 1;
+
+  if (numberOfRequestsForUser[userId] > 5) {
+      return res.status(404).json({ error: 'Too many requests. Please try again later.' });
+  }
+
+  next(); // Proceed to the next route
+});
+
 let numberOfRequestsForUser = {};
 setInterval(() => {
     numberOfRequestsForUser = {};
